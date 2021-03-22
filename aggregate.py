@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import date
 
 start_date = date(2021, 1, 6)
-end_date = date(2021, 3, 18)
+end_date = date.today()
 variant_names = {
     'b117': ('Variant B.1.1.7', 'B.1.1.7 Variant '),
     'p1': ('Variant P.1', 'P.1 Variant '),
@@ -33,7 +33,7 @@ def read_rows(_date: date) -> pd.DataFrame:
         return df.rename(columns=dict([(in_col, code) for code, (_, in_col) in variant_names.items()] + [('State', 'state')]))
 
 
-if __name__ == '__main__':
+def run():
     gdf = pd.DataFrame()
     for _date in pd.date_range(start_date, end_date):
         try:
@@ -51,3 +51,7 @@ if __name__ == '__main__':
         gdf[col] = gdf[col].fillna(0).astype('int32')
 
     gdf.sort_values(by=['date', 'state']).to_csv('us-states.csv', index=False)
+
+
+if __name__ == '__main__':
+    run()
