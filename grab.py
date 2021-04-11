@@ -14,7 +14,7 @@ CDC_URL = 'https://www.cdc.gov/coronavirus/2019-ncov/transmission/variant-cases.
 if __name__ == '__main__':
     res = http.request('GET', CDC_URL)
     sel = Selector(text=res.data.decode('utf-8'))
-    partial_url = util.parse_url(sel.xpath('//a[contains(@href, ".xls")]')[0].attrib['href'])
+    partial_url = util.parse_url(sel.xpath('//a[contains(@href, ".csv")]')[0].attrib['href'])
     last_updated = parser.isoparse(sel.xpath('//meta[@name="cdc:last_published"]')[0].attrib['content']).date()
     filename = f'updates/{last_updated.isoformat()}.csv'
     url = util.Url(scheme='https', host='www.cdc.gov', path=partial_url.path, query=partial_url.query)
